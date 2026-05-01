@@ -2,7 +2,8 @@ require "test_helper"
 
 class RoomsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @room = rooms(:one)
+    @room = rooms(:conference_room)
+    @building = buildings(:main_complex)
   end
 
   test "should get index" do
@@ -11,13 +12,13 @@ class RoomsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_room_url
+    get new_room_url(building_id: @building.id)
     assert_response :success
   end
 
   test "should create room" do
     assert_difference("Room.count") do
-      post rooms_url, params: { room: { building: @room.building, name: @room.name, status: @room.status } }
+      post rooms_url, params: { room: { building_id: @building.id, name: "#{@room.name} New", status: @room.status } }
     end
 
     assert_redirected_to room_url(Room.last)
@@ -43,6 +44,6 @@ class RoomsControllerTest < ActionDispatch::IntegrationTest
       delete room_url(@room)
     end
 
-    assert_redirected_to rooms_url
+    assert_redirected_to building_url(@building)
   end
 end

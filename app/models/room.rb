@@ -9,7 +9,7 @@ class Room < ApplicationRecord
 
   def currently_occupied?
     now = Time.now
-    current_time = now.strftime("%H:%M:%S")
+    # current_time = now.strftime("%H:%M:%S")
 
     schedules.where("start_date <= ? AND end_date >= ?", now.to_date, now.to_date)
            .where("time(start_time) <= time(?) AND time(end_time) >= time(?)", now, now)

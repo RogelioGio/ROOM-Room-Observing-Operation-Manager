@@ -1,11 +1,5 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  utility_type: MyString
-  room: one
-
-two:
-  name: MyString
-  utility_type: MyString
-  room: two
+electric_meter:
+  name: "Main Power"
+  utility_type: "Electricity"
+  status: 1
+  room: conference_room

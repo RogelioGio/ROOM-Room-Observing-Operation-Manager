@@ -1,11 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  room: one
-  start_time: 2026-04-29 13:06:53
-  end_time: 2026-04-29 13:06:53
-
-two:
-  room: two
-  start_time: 2026-04-29 13:06:53
-  end_time: 2026-04-29 13:06:53
+meeting_schedule:
+  room: conference_room
+  description: "Weekly Sync"
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today %>
+  start_time: <%= Time.now %>
+  end_time: <%= Time.now + 1.hour %>
+  frequency: "once"
+  status: "active"

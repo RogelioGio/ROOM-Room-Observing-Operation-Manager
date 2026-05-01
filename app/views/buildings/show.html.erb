@@ -1,0 +1,74 @@
+<% content_for :title, "Showing building" %>
+
+<div class="w-full h-full flex flex-col gap-6" id="building" data-building-id="<%= @building.id %>">
+  <div class="flex flex-row items-center justify-between w-full">
+      <div class="flex items-center gap-3">
+        <%= link_to buildings_path, class: "" do %>
+          <%= lucide_icon "arrow-left", class: "size-7" %>
+        <% end %>
+        <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "building", class: "size-7" %>
+        </div>
+        <div>
+            <p class="text-xs text-stone-900/70">Building Name</p>
+            <p class="font-bold text-xl"><%= @building.name %></p>
+        </div>
+      </div>
+      <div class="flex flex-row gap-2">
+        <%= link_to edit_building_path(@building), class: "rounded-md px-3.5 py-2.5 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer transition flex items-center gap-2" do %>
+          <%= lucide_icon "square-pen", class: "size-4" %>
+          <span>Edit</span>
+        <% end %>
+        <%= button_to @building, 
+            method: :delete, 
+            form_class: "inline-block", 
+            class: "rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer transition flex items-center gap-2", 
+            data: { turbo_confirm: "Are you sure? All rooms in this building will be deleted." } do %>
+          <%= lucide_icon "trash-2", class: "size-4" %>
+          <span>Delete</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex flex-row w-full items-center justify-between">
+      <div>
+        <p class="font-bold text-xl">Room List</p>
+        <p class="text-xs">List of rooms that is currently active in the building</p>
+      </div>
+      <%= link_to new_room_path(building_id: @building.id), class: "rounded-md px-3.5 py-2.5 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer transition flex items-center gap-2" do %>
+        <%= lucide_icon "plus", class: "size-4" %>
+        <span>Add Room</span>
+      <% end %>
+  </div>
+
+  <% if @building.rooms.any? %>
+    <%= turbo_stream_from "building_#{@building.id}_rooms" %>
+    <div class="w-full rounded-md border border-stone-300 overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr class="bg-slate-500/20">
+            <th class="py-4 px-6 text-left font-medium">Room Name</th>
+            <th class="py-4 px-6 text-left font-medium">Status</th>
+            <th class="py-4 px-6 text-left font-medium">Last Updated</th>
+            <th class="py-4 px-6 text-left font-medium text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @building.rooms.each do |room| %>
+            <%= render "room_rows", room: room %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="h-full flex flex-col items-center justify-center gap-5">
+        <div class="bg-stone-300 text-stone-900 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "file-exclamation-point", class: "size-7" %>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-xl">No Rooms Registered Yet</p>
+          <p class="text-xs text-stone-900/70">Add rooms to this building to manage them</p>
+        </div>
+    </div>
+  <% end %>
+</div>

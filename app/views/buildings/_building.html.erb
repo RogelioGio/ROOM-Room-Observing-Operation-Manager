@@ -1,0 +1,16 @@
+<%= link_to building, id: dom_id(building), class: "w-full h-full rounded-xl border border-gray-200 p-6 flex flex-col gap-4 bg-white hover:bg-gray-50 hover:shadow-lg hover:border-blue-200 transition all duration-200 group" do %>
+  <div class="flex items-center gap-3">
+    <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+      <%= lucide_icon "building", class: "size-7" %>
+    </div>
+    <div>
+        <p class="text-xs text-stone-900/70">Building Name</p>
+        <p class="font-medium text-lg"><%= building.name %></p>
+    </div>
+  </div>
+  <div>
+      <p class="text-xs text-stone-900/70">Address</p>
+      <p class="text-sm"><%= building.address %></p>
+  </div>
+
+<% end %>

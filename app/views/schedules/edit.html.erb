@@ -1,0 +1,21 @@
+<% content_for :title, "Editing schedule" %>
+
+<div class="w-full h-full flex flex-col gap-6">
+  <div class="flex flex-row items-center justify-between w-full">
+    <div class="flex items-center gap-3">
+        <%= link_to room_path(@room), class: "" do %>
+            <%= lucide_icon "arrow-left", class: "size-7" %>
+        <% end %>
+        <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "clock-fading", class: "size-7" %>
+        </div>
+          <div>
+              <p class="font-bold text-xl">Edit Schedule</p>
+              <p class="text-xs">Complete the form to edit the schedule details</p>
+          </div>
+      </div>
+  </div>
+
+  <%= render "form", schedule: @schedule %>
+
+</div>

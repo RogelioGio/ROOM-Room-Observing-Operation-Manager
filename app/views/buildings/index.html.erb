@@ -1,0 +1,36 @@
+<% content_for :title, "Buildings" %>
+
+<div class="w-full h-full flex flex-col gap-4">
+  <div class="flex justify-between items-center ">
+    <div class="flex flex-row gap-4">
+      <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "building-2", class: "size-7" %>
+      </div>
+      <div>
+        <h1 class="font-bold text-2xl">Buildings</h1>
+        <p class="text-xs">This is the list of registered building in the system.</p>
+      </div>
+    </div>
+    <%# <%= link_to new_building_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  </div>
+
+  <div id="buildings" class="min-w-full h-full">
+     <% if @buildings.any? %>
+       <div id="rooms" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% @buildings.each do |building| %>
+            <%= render building %>
+          <% end %>
+        </div>
+    <% else %>  
+      <div class="h-full flex flex-col items-center justify-center gap-5">
+          <div class="bg-stone-300 text-stone-900 rounded-md size-14 inline-flex items-center justify-center">
+            <%= lucide_icon "file-exclamation-point", class: "size-7" %>
+          </div>
+          <div class="text-center">
+            <p class="font-bold text-xl">No Building Registered Yet</p>
+            <p class="text-xs text-stone-900/70">Add Building in the system in order to manage them</p>
+          </div>
+      </div>
+    <% end %>	
+  </div>
+</div>

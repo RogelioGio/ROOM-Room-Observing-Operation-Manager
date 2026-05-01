@@ -1,0 +1,129 @@
+<div class="w-full h-full flex flex-col gap-6">
+  <div class="flex flex-row items-center justify-between w-full">
+    <div class="flex items-center gap-3">
+        <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "layout-dashboard", class: "size-7" %>
+        </div>
+        <div>
+            <p class="font-bold text-xl">System Dashboard</p>
+            <p class="text-xs">Statistical view of everything in the system</p>
+        </div>
+    </div>
+  </div>
+
+  <div class="stats shadow">
+    <div class="stat">
+      <div class="stat-figure text-primary">
+        <%= lucide_icon "warehouse", class: "size-7" %>
+      </div>
+      <div class="stat-title">Rooms</div>
+      <div class="stat-value text-primary"><%= @total_room_across_buildings %> <%= @total_room_across_buildings == 1 ? "Room" : "Rooms" %></div>
+      <div class="stat-desc">Total rooms in the system</div>
+    </div>
+    <div class="stat">
+      <div class="stat-figure text-primary">
+        <%= lucide_icon "circle", class: "size-7" %>
+      </div>
+      <div class="stat-title">Available Rooms</div>
+      <div class="stat-value text-primary"><%= @total_available_rooms %> <%= @total_available_rooms == 1 ? "Room" : "Rooms" %></div>
+      <div class="stat-desc">Rooms currently available for scheduling</div>
+    </div>
+    <div class="stat">
+      <div class="stat-figure text-primary">
+        <%= lucide_icon "ban", class: "size-7" %>
+      </div>
+      <div class="stat-title">Occupied Rooms</div>
+      <div class="stat-value text-primary"><%= @total_occupied_rooms %> <%= @total_occupied_rooms == 1 ? "Room" : "Rooms" %></div>
+      <div class="stat-desc">Rooms currently occupied</div>
+    </div>
+    <div class="stat">
+      <div class="stat-figure text-primary">
+        <%= lucide_icon "wrench", class: "size-7" %>
+      </div>
+      <div class="stat-title">Under Maintenance</div>
+      <div class="stat-value text-primary"><%= @total_maintenance_rooms %> <%= @total_maintenance_rooms == 1 ? "Room" : "Rooms" %></div>
+      <div class="stat-desc">Rooms currently under maintenance</div>
+    </div>
+  </div>
+
+  <div class="flex flex-row items-center justify-between w-full">
+    <div class="flex items-center gap-3">
+        <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "warehouse", class: "size-7" %>
+        </div>
+        <div>
+            <p class="font-bold text-xl">Recent Rooms</p>
+            <p class="text-xs">Recently added rooms in the system</p>
+        </div>
+    </div>
+  </div>
+
+  <% if @rooms.any? %>
+  <% else %>
+    <div class="h-full flex flex-col items-center justify-center gap-5">
+        <div class="bg-stone-300 text-stone-900 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "file-exclamation-point", class: "size-7" %>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-xl">No Recent Rooms</p>
+          <p class="text-xs text-stone-900/70">No rooms have been added recently.</p>
+        </div>
+    </div>
+  <% end %>
+
+
+  <div class="w-full rounded-md border border-stone-300 overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-slate-500/20">
+          <th class="py-4 px-6 text-left font-medium">Room Name</th>
+          <th class="py-4 px-6 text-left font-medium">Status</th>
+          <th class="py-4 px-6 text-left font-medium">Added at</th>
+          <th class="py-4 px-6 text-left font-medium ">Last Updated</th>
+          <th class="py-4 px-6 text-left font-medium text-right"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% @rooms.each do |room| %>
+          <tr class="border-b last:border-b-0 hover:bg-slate-100 transition cursor-pointer border-stone-300">
+            <td class="px-6 py-2">
+              <p><%= room.name %></p>
+              <p class="text-xs text-stone-900/70"><%= room.building.name %></p>
+            </td>
+             <td class="px-6 py-2">
+                <% case room.status %>
+                <% when "available" %>
+                  <div class="badge badge-soft badge-primary">
+                    <%= lucide_icon "circle", class: "size-3" %>
+                    <span>Available</span>
+                  </div>
+                <% when "occupied" %>
+                  <div class="badge badge-soft badge-error">
+                    <%= lucide_icon "ban", class: "size-3" %>
+                    <span>Occupied</span>
+                  </div>
+                <% when "maintenance" %>
+                  <div class="badge badge-soft badge-warning">
+                    <%= lucide_icon "wrench", class: "size-3" %>
+                    <span>Maintenance</span>
+                  </div>
+                <% else %>
+                  <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded">Unknown</span>
+                <% end %>
+              </td>
+            <td class="px-6 py-2"><%= room.created_at.strftime("%B %d, %Y") %></td>
+            <td class="px-6 py-2"><%= room.updated_at.strftime("%B %d, %Y") %></td>
+            <td class="px-6 py-2 flex justify-end">
+              <%= link_to room_path(room), class: "btn btn-ghost btn-sm" do %>
+                  <%= lucide_icon "eye", class: "size-4" %>
+                  <span>View</span>
+                <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  </div>

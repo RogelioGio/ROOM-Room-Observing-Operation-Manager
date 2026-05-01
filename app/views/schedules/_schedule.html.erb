@@ -1,0 +1,18 @@
+<div id="<%= dom_id schedule %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Room:</strong>
+    <%= schedule.room_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Start time:</strong>
+    <%= schedule.start_time %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">End time:</strong>
+    <%= schedule.end_time %>
+    <div>
+      <%= schedule.description %>
+      <%= schedule.frequency %>
+    </div>
+  </div>
+</div>

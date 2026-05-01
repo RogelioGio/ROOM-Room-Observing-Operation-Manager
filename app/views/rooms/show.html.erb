@@ -1,0 +1,230 @@
+<% content_for :title, "Showing room" %>
+
+<div class="w-full h-full flex flex-col gap-6" data-room-id="<%= @room.id %>" id="room">
+  <div class="flex flex-row items-center justify-between w-full">
+    <div class="flex items-center gap-3">
+      <%= link_to building_path(@room.building), class: "" do %>
+        <%= lucide_icon "arrow-left", class: "size-7" %>
+      <% end %>
+      <div class="bg-blue-100 text-blue-400 rounded-md size-14 inline-flex items-center justify-center">
+        <%= lucide_icon "warehouse", class: "size-7" %>
+      </div>
+      <div>
+          <p class="text-xs text-stone-900/70">Room Name</p>
+          <p class="font-bold text-xl"><%= @room.name %></p>
+          <p class="text-xs"><%= @room.building.name %></p>
+      </div>
+      <div>
+         <% case @room.status %>
+            <% when "available" %>
+              <div class="badge badge-soft badge-primary">
+                <%= lucide_icon "circle", class: "size-3" %>
+                <span>Available</span>
+              </div>
+            <% when "occupied" %>
+              <div class="badge badge-soft badge-error">
+                <%= lucide_icon "ban", class: "size-3" %>
+                <span>Occupied</span>
+              </div>
+            <% when "maintenance" %>
+              <div class="badge badge-soft badge-warning">
+                <%= lucide_icon "wrench", class: "size-3" %>
+                <span>Maintenance</span>
+              </div>
+            <% else %>
+              <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded">Unknown</span>
+          <% end %>
+      </div>
+    </div>
+    <div class="flex flex-row gap-2">
+      <%= link_to edit_room_path(@room), class: "rounded-md px-3.5 py-2.5 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer transition flex items-center gap-2" do %>
+        <%= lucide_icon "square-pen", class: "size-4" %>
+        <span>Edit</span>
+      <% end %>
+      <%= button_to @room, 
+          method: :delete, 
+          form_class: "inline-block", 
+          class: "rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer transition flex items-center gap-2", 
+          data: { turbo_confirm: "Are you sure? All rooms in this building will be deleted." } do %>
+        <%= lucide_icon "trash-2", class: "size-4" %>
+        <span>Delete</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex flex-row w-full items-center justify-between">
+      <div>
+        <p class="font-bold text-xl">Utilities</p>
+        <p class="text-xs">List of utilities for the room</p>
+      </div>
+      <%= link_to new_utility_path(room_id: @room.id), class: "rounded-md px-3.5 py-2.5 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer transition flex items-center gap-2" do %>
+        <%= lucide_icon "plus", class: "size-4" %>
+        <span>Add Room Utility</span>
+      <% end %>
+  </div>
+
+   <% if @room.utilities.any? %>
+    <div class="w-full rounded-md border border-stone-300 overflow-hidden">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-slate-500/20">
+              <th class="py-4 px-6 text-left font-medium">Name</th>
+              <th class="py-4 px-6 text-left font-medium">Type</th>
+              <th class="py-4 px-6 text-left font-medium">Status</th>
+              <th class="py-4 px-6 text-left font-medium text-right"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @room.utilities.each do |utility| %>
+              <tr class="border-b last:border-b-0 hover:bg-slate-100 transition cursor-pointer border-stone-300">
+                <td class="px-6 py-2">
+                  <p><%= utility.name %></p>
+                </td>
+                <td class="px-6 py-2">
+                  <p><%= utility.utility_type %></p>
+                </td>
+                <td class="px-6 py-2">
+                  <% case utility.status %>
+                    <% when "working" %>
+                      <div class="badge badge-soft badge-primary">
+                        <%= lucide_icon "check", class: "size-3" %>
+                        <span>Working</span>
+                      </div>
+                    <% when "not_working" %>
+                      <div class="badge badge-soft badge-error">
+                          <%= lucide_icon "x", class: "size-3" %>
+                          <span>Not Working</span>
+                        </div>
+                    <% when "maintenance" %>
+                      <div class="badge badge-soft badge-warning">
+                        <%= lucide_icon "wrench", class: "size-3" %>
+                        <span>Maintenance</span>
+                      </div>
+                    <% else %>
+                      <div class="badge badge-soft badge-secondary">
+                        <span>Unknown</span>
+                      </div>
+                  <% end %>
+                </td>
+                <td class="px-6 py-2 text-right">
+                  <%= link_to edit_utility_path(utility, room_id: @room.id), class: "btn btn-ghost btn-sm" do %>
+                    <%= lucide_icon "square-pen", class: "size-4" %>
+                    <span>Edit</span>
+                  <% end %>
+                  <%= button_to utility, 
+                      method: :delete, 
+                      form_class: "inline-block", 
+                      class: "btn btn-ghost btn-sm", 
+                      data: { turbo_confirm: "Are you sure? This will delete the utility." } do %>
+                    <%= lucide_icon "trash-2", class: "size-4" %>
+                    <span>Delete</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+  <% else %>
+  <div class="flex flex-col items-center justify-center gap-5">
+        <div class="bg-stone-300 text-stone-900 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "file-exclamation-point", class: "size-7" %>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-xl">No Utilities Found</p>
+          <p class="text-xs text-stone-900/70">Add utilities to this room to manage them</p>
+        </div>
+    </div>
+  <% end %>
+
+  <div class="flex flex-row w-full items-center justify-between">
+      <div>
+        <p class="font-bold text-xl">Room Schedule</p>
+        <p class="text-xs">List of schedule for the room</p>
+      </div>
+      <%= link_to new_schedule_path(room_id: @room.id), class: "rounded-md px-3.5 py-2.5 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer transition flex items-center gap-2" do %>
+        <%= lucide_icon "plus", class: "size-4" %>
+        <span>Schedule Room</span>
+      <% end %>
+  </div>
+
+  <% if @room.schedules.any? %>
+    <div class="w-full rounded-md border border-stone-300 overflow-hidden">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-slate-500/20">
+              <th class="py-4 px-6 text-left font-medium">Date</th>
+              <th class="py-4 px-6 text-left font-medium">Scheduled Time</th>
+              <th class="py-4 px-6 text-left font-medium">Frequency Type</th>
+              <th class="py-4 px-6 text-left font-medium">Description</th>
+              <th class="py-4 px-6 text-left font-medium">Status</th>
+              <th class="py-4 px-6 text-left font-medium text-right"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @room.schedules.each do |schedule| %>
+              <tr class="border-b last:border-b-0 hover:bg-slate-100 transition cursor-pointer border-stone-300">
+                <td class="px-6 py-2">
+                  <p><%= schedule.start_date.strftime("%b %d %Y") %> to  <%= schedule.end_date.strftime("%b %d %Y") %></p>
+                </td>
+                <td class="px-6 py-2">
+                  <%= schedule.start_time&.strftime("%I:%M %p") %> to <%= schedule.end_time&.strftime("%I:%M %p") %>
+                </td>
+                <td class="px-6 py-2">
+                  <% if schedule.frequency_list == ["once"] %>
+                    <p>Once</p>
+                  <% else %>
+                    <p>Every <%= schedule.frequency_list.join(", ") %></p>
+                  <% end %>
+                </td>
+                <td class="px-6 py-2">
+                  <p><%= schedule.description %></p>
+                </td>
+                <td class="px-6 py-2">
+                  <% case schedule.status %>
+                    <% when "active" %>
+                      <div class="badge badge-soft badge-primary">
+                        <%= lucide_icon "circle", class: "size-3" %>
+                        <span>Active</span>
+                      </div>
+                    <% when "inactive" %>
+                      <div class="badge badge-soft badge-error">
+                        <%= lucide_icon "ban", class: "size-3" %>
+                        <span>Inactive</span>
+                      </div>
+                    <% else %>
+                      <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded">Unknown</span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-2 text-right">
+                  <%= link_to edit_schedule_path(schedule), class: "btn btn-ghost btn-sm" do %>
+                    <%= lucide_icon "square-pen", class: "size-4" %>
+                    <span>Edit</span>
+                  <% end %>
+                  <%= button_to schedule, 
+                      method: :delete, 
+                      form_class: "inline-block", 
+                      class: "btn btn-ghost btn-sm", 
+                      data: { turbo_confirm: "Are you sure? This will delete the schedule." } do %>
+                    <%= lucide_icon "trash-2", class: "size-4" %>
+                    <span>Delete</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+  <% else %>
+    <div class="flex flex-col items-center justify-center gap-5">
+        <div class="bg-stone-300 text-stone-900 rounded-md size-14 inline-flex items-center justify-center">
+          <%= lucide_icon "file-exclamation-point", class: "size-7" %>
+        </div>
+        <div class="text-center">
+          <p class="font-bold text-xl">Room Not Scheduled Yet</p>
+          <p class="text-xs text-stone-900/70">Add schedules to this room to manage them</p>
+        </div>
+    </div>
+  <% end %>
+</div>
+</div>

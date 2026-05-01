@@ -1,0 +1,30 @@
+<div class="toast toast-top toast-end z-[100]" id="flash-messages">
+    <% flash.each do |type, message| %>
+        <% alert_class = case type.to_sym
+        when :notice then "alert-success"
+        when :alert, :error then "alert-error"
+        when :info then "alert-info"
+        when :warning then "alert-warning"
+        else "alert-info"
+        end %>
+
+        <%icon_name = case type.to_sym
+              when :notice then "check-circle"
+              when :alert, :error then "x-circle"
+              when :info then "info"
+              when :warning then "alert-triangle"
+              else "bell"
+              end%>
+
+        <div class="alert <%= alert_class %>"
+            data-controller="toast"
+            data-action="click->toast#close"
+            >
+            <div class="flex flex-row gap-2 items-center">
+                <%= lucide_icon icon_name, class: "w-5 h-5" %>
+                <span><%= message %></span>
+            </div>
+            <button class="btn btn-ghost btn-xs">✕</button>
+        </div>
+    <% end %>
+</div>

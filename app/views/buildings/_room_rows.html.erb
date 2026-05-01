@@ -1,0 +1,24 @@
+<tr id="<%= dom_id(room)%>" class="border-b last:border-b-0 hover:bg-slate-100 transition cursor-pointer border-stone-300">
+    <td class="px-6 py-2"><%= room.name %></td>
+    <td class="px-6 py-2">
+    <%= room.status %>
+    
+    </td>
+    <td class="px-6 py-2">
+    <%= smart_date(room.updated_at) %>
+    </td>
+    <td class="px-6 py-2 flex flex-row justify-end gap-2">
+    <%= link_to room_path(room), class: "btn btn-ghost btn-sm" do %>
+        <%= lucide_icon "eye", class: "size-4" %>
+        <span>View</span>
+    <% end %>
+    <%= link_to edit_room_path(room), class: "btn btn-ghost btn-sm" do %>
+        <%= lucide_icon "edit", class: "size-4" %>
+        <span>Edit</span>
+    <% end %>
+    <%= link_to room_path(room), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-ghost btn-sm" do %>
+        <%= lucide_icon "trash-2", class: "size-4" %>
+        <span>Delete</span>
+    <% end %>
+    </td>
+</tr>
